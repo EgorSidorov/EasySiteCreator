@@ -1,0 +1,110 @@
+@@jsnoanswer(
+       if(request.get_parameter("cookie_val")==="del_cookie")
+             response.set_cookie("user_session","invalid","192.168.220.1",true,"\\",86000);
+
+       if(request.get_parameter("photo")!=="empty_string")
+            db.set_file("UPDATE users SET image = :sourceimg WHERE cookie=\""+request.get_cookie("user_session")+"\"",
+                                      ":sourceimg",     
+                                       request.get_parameter_byte_array("photo"));
+
+var login =  request.get_parameter("login");
+var password = request.get_parameter("pass");
+var str1 = "SELECT name from users WHERE name=\"";
+var str2 = "\" and password =\"";
+var request_str = str1+ request.get_parameter("login")+ str2+ request.get_parameter("pass")+"\"";
+var check = false;
+ if(db.string_answer(request_str)===login)
+   {
+        check=true;
+    }
+       if(login !=="empty_string" && password !=="empty_string" && check===true )
+       {
+             var cookie = Math.round((Math.random() * (99999 - 11111) + 11111));
+             response.set_cookie("user_session",
+                                                 cookie.toString(),
+                                                "192.168.220.1",true,"\\",86000);
+             db.no_answer("UPDATE users SET cookie=\""+cookie.toString()+"\" WHERE name=\""+ request.get_parameter("login")+"\"");
+        }
+
+)@@
+
+if(@@js(var answer=false;if(request.get_parameter("login")!=="empty_string" || request.get_parameter("cookie_val")==="del_cookie")answer=true;answer;)@@){
+<script type="text/javascript">
+function instance()
+    {
+window.location.href=window.location.href;
+}
+</script>
+}endif
+
+<!DOCTYPE HTML>
+<html>
+<link rel="stylesheet" type="text/css" href="resource/css/mypage.css" />
+ <head>
+  <meta charset="utf-8">
+  <title>Моя страница</title>
+ </head>
+ <body>
+
+if(@@js(var answer=false;if(request.get_cookie("user_session")==="invalid" || db.string_answer("SELECT name from users WHERE cookie=\""+request.get_cookie("user_session")+"\"")==="invalid") answer=true;answer;)@@){
+<div class="autoriz_cont">
+<h1>Вы не авторизованы</h1>
+<img src="resource/image/user.jpg"  width="140" height="140"">
+  <form method="post">
+   <p>
+        <input type="text" name="login" placeholder="Введите логин"> 
+        <input type="password" name="pass"  placeholder="Введите пароль">
+   <input type="submit"  value="Авторизоваться">
+</p>
+  </form>
+   <a href=registration>Регистрация</а>
+</div>    
+}endif
+
+if(@@js(var answer=false;if(request.get_cookie("user_session")!=="invalid" && db.string_answer("SELECT name from users WHERE cookie=\""+request.get_cookie("user_session")+"\"")!=="invalid") answer=true;answer;)@@){
+
+<nav class="top-menu">
+  <ul class="menu-main">
+<li><a href="http://192.168.220.1:8080/mypage">Моя страница</a></li>
+<li><a href="http://192.168.220.1:8080/mypage/messages">Мои сообщения</a></li>
+</ul>
+</nav>
+
+@@jsnoanswer(
+if(request.get_parameter("receiver")!=="empty_string"){
+    db.no_answer("INSERT INTO messages VALUES(\""+db.string_answer("SELECT name from users WHERE cookie=\""+request.get_cookie("user_session")+"\"")
++"\",\""+request.get_parameter("receiver")+"\",\""+request.get_parameter("textmessage")+"\")");
+}    
+)@@
+<div class="user_page">
+<h1>Добро пожаловать,@@js(db.string_answer("SELECT name from users where cookie=\""+request.get_cookie("user_session")+"\";");)@@</h1>
+<img align="top" width=200 height=200 src=/new_page8 alt="avatar">
+
+
+  <form enctype="multipart/form-data" method="post">
+   <div class="file-upload">
+     <label>
+          <input type="file" name="photo" multiple accept="image/*,image/jpeg">
+          <span>Выбрать аватар</span>
+     </label>
+</div>
+   <p><input type="submit" value="Установить аватар"></p>
+  </form>
+<form method="post">
+<div class="button">
+<button value="del_cookie" name="cookie_val" type="submit" >Выйти</button></p>
+</div>
+</form>
+</div>
+}endif
+<body onload="instance();">
+ </body>
+</html>
+
+
+
+
+
+if(false){
+<a href="" title="Покинуть аккаунт" class="btn btn-primary" onclick="document.cookie =\"user_session=;domain=localhost;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT;\";window.location.reload();">Выйти</a>
+}endif

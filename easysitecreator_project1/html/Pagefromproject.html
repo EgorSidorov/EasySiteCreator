@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="shortcut icon" href="resource/favicon.ico" type="image/x-icon">
+</head>
+<body>
+
+<h1>Header 1</h1>
+<h2>
+@@js(Math.sin(5)*2)@@
+</h2>
+<h3>@@js(request.get_path();)@@</h3>
+<h4>Heading 4</h4>
+<h5>@@js(db.response_string_for_javascript("SELECT Salary from account where id=1");)@@</h5>
+<h6>@@js(response.set_cookie("egor_cookie","qwerty","localhost");)@@</h6>
+<h8>@@js(request.get_cookie("egor_cookie");)@@</h8>
+<img src=/new_page8 alt="Mountain View">
+</body>
+</html>

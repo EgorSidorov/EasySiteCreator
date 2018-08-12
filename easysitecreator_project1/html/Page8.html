@@ -1,0 +1,4 @@
+[RETURN QBYTEARRAY]
+if(@@js(var answer=false;if(request.get_cookie("user_session")!=="invalid")answer=true;answer)@@){
+db_request=SELECT image FROM users WHERE cookie="@@js(request.get_cookie("user_session"))@@";return
+}

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <textarea id="para1">password</textarea>
+<script type="text/javascript">
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+//xhttp.setRequestHeader("namefield", "555");
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+     document.getElementById("demo").innerHTML = this.responseText;
+    }
+}
+var string_req = "namefield="+ document.getElementById("para1").value;
+  xhttp.open("POST", "new_page1", true);
+xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhttp.send(string_req);
+  };
+</script>
+  <h2><div id="demo">Let AJAX change this text</div></h2>
+  <button type="button" onclick="loadDoc()">Change Content</button>
+<h1>Inchoose path</h1>
+
+</body>
+</html>

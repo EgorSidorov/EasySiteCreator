@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>Пользователи сайта</title>
+ </head>
+ <body>
+Список пользователей:
+<table>
+  <colgroup>
+    <col span="2" style="background:Khaki"><!-- С помощью этой конструкции задаем цвет фона для первых двух столбцов таблицы-->
+    <col style="background-color:LightCyan"><!-- Задаем цвет фона для следующего (одного) столбца таблицы-->
+  </colgroup>
+  <tr>
+    <th>Пользователь</th>
+  </tr>
+@@js(
+var list_users = db.stringlist_answer("SELECT name from users");
+var answer = "";
+list_users.forEach(function(entry) {
+answer = answer + " <tr><td>"+entry+"</td></tr>";
+});
+answer;
+)@@
+</table>
+ </body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="resource/css/mypage.css" />
+  <title>Регистрация</title>
+ </head>
+ <body>
+<div class="autoriz_cont">
+<h1>Регистрация нового пользователя</h1>
+  <form enctype="multipart/form-data" method="post">
+   <p><input type="text" input name="login" placeholder="Ввведите логин"> <input type="password" name="pass" placeholder="Ввведите пароль"></p>
+   <p><input type="submit" value="Зарегистрироваться"></p>
+  </form>
+   <a href=mypage>Уже зарегестрированы? Авторизуйтесь.</а>
+if(@@js(var answer=false;if(request.get_parameter("pass")!=="empty_string") answer=true;answer;)@@){
+@@jsnoanswer(
+var cookie = Math.round((Math.random() * (99999 - 11111) + 11111));
+db.no_answer("INSERT INTO users VALUES(\""+request.get_parameter("login")+"\",\" "+request.get_parameter("pass")+"\",\""+cookie.toString()+"\",NULL)");
+//db.set_file("UPDATE users SET image = :sourceimg WHERE name=\""+request.get_parameter("login")+"\"", ":sourceimg", request.get_parameter_byte_array("photo"));
+response.set_cookie("user_session",cookie.toString(),"localhost");
+)@@
+<h1>Аккаунт создан</h1>
+</div>
+}endif
+ </body>
+</html>
+if(false){
+@@jsnoanswer(response.set_cookie("egor_cookie",request.get_parameter("pass"),"localhost");)@@
+}endif

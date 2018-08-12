@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>Регистрация</title>
+ </head>
+ <body>
+Регистрация нового пользователя
+  <form method="post">
+   <p><input name="login"> <input type="password" name="pass"></p>
+   <p><input type="submit"></p>
+  </form>
+if(@@js(var answer=false;if(request.get_parameter("pass")!=="empty_string") answer=true;answer;)@@){
+@@jsnoanswer(
+var cookie = Math.round((Math.random() * (99999 - 11111) + 11111));
+db.no_answer("INSERT INTO users VALUES(\""+request.get_parameter("login")+"\",\" "+request.get_parameter("pass")+"\",\""+cookie.toString()+"\")");
+response.set_cookie("user_session",cookie.toString(),"localhost");
+)@@
+<h1>Аккаунт создан</h1>
+}endif
+ </body>
+</html>
+if(false){
+@@jsnoanswer(response.set_cookie("egor_cookie",request.get_parameter("pass"),"localhost");)@@
+}endif

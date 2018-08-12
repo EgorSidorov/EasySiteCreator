@@ -1,0 +1,2 @@
+[RETURN QBYTEARRAY]
+db_request=SELECT image FROM users WHERE cookie="@@js(request.get_cookie("user_session"))@@";return

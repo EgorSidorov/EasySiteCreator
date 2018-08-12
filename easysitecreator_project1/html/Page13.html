@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="../resource/css/mymessages.css" />
+  <title>Мои сообщения</title>
+ </head>
+ <body>
+if(@@js(var answer=false;if(request.get_cookie("user_session")==="invalid" || db.string_answer("SELECT name from users WHERE cookie=\""+request.get_cookie("user_session")+"\"")==="invalid") answer=true;answer;)@@){
+<script type="text/javascript">
+
+location.replace("http://192.168.1.33:8080/mypage");
+
+</script> 
+}endif
+
+
+if(@@js(var answer=false;if(request.get_cookie("user_session")!=="invalid" && db.string_answer("SELECT name from users WHERE cookie=\""+request.get_cookie("user_session")+"\"")!=="invalid") answer=true;answer;)@@){
+<nav class="top-menu">
+  <ul class="menu-main">
+<li><a href="http://192.168.220.1:8080/mypage">Моя страница</a></li>
+<li><a href="http://192.168.220.1:8080/mypage/messages">Мои сообщения</a></li>
+</ul>
+</nav>
+@@jsnoanswer(
+if(request.get_parameter("receiver")!=="empty_string"){
+    db.no_answer("INSERT INTO messages VALUES(\""+db.string_answer("SELECT name from users WHERE cookie=\""+request.get_cookie("user_session")+"\"")
++"\",\""+request.get_parameter("receiver")+"\",\""+request.get_parameter("textmessage")+"\")");
+}    
+)@@
+
+<div class="autoriz_cont">
+  <form   method="post">
+    <p><textarea rows="1" cols="45" name="receiver"  placeholder="Кому отправить сообщение"></textarea></p>
+    <p><textarea rows="10" cols="45" name="textmessage"  placeholder="Введите сообщение"></textarea></p>
+    <p><input type="submit" value="Отправить"></p>
+  </form>
+<table>
+  <tr>
+    <th>Полученные сообщения</th>
+    <th>Отправленные сообщения</th>
+  </tr>
+<td>
+<table>
+  <colgroup>
+    <col span="2" style="background:Khaki"><!-- С помощью этой конструкции задаем цвет фона для первых двух столбцов таблицы-->
+    <col style="background-color:LightCyan"><!-- Задаем цвет фона для следующего (одного) столбца таблицы-->
+  </colgroup>
+  <tr>
+    <th>Отправитель</th>
+    <th>Текст сообщения.</th>
+  </tr>
+@@js(
+var message_string = db.stringlist_answer("SELECT textmessage from messages WHERE receiver=\""+db.string_answer("SELECT name from users where cookie=\""+request.get_cookie("user_session")+"\";")+"\"");
+
+var sender = db.stringlist_answer("SELECT sender from messages WHERE receiver=\""+db.string_answer("SELECT name from users where cookie=\""+request.get_cookie("user_session")+"\";")+"\"");
+
+var time = db.stringlist_answer("SELECT time from messages WHERE receiver=\""+db.string_answer("SELECT name from users where cookie=\""+request.get_cookie("user_session")+"\";")+"\"");
+var answer = "";
+var i = 0;
+message_string.reverse().forEach(function(entry) {
+answer = answer + " <tr><td>"+sender[i]+"</td><td>"+entry+"</td></tr>";
+i++;
+});
+answer;
+)@@
+</table>
+</td>
+<td>
+<table>
+  <colgroup>
+    <col span="2" style="background:Khaki"><!-- С помощью этой конструкции задаем цвет фона для первых двух столбцов таблицы-->
+    <col style="background-color:LightCyan"><!-- Задаем цвет фона для следующего (одного) столбца таблицы-->
+  </colgroup>
+  <tr>
+    <th>Получатель</th>
+    <th>Текст сообщения.</th>
+  </tr>
+@@js(
+var message_string = db.stringlist_answer("SELECT textmessage from messages WHERE  sender=\""+db.string_answer("SELECT name from users where cookie=\""+request.get_cookie("user_session")+"\";")+"\"");
+
+var sender = db.stringlist_answer("SELECT receiver from messages WHERE  sender=\""+db.string_answer("SELECT name from users where cookie=\""+request.get_cookie("user_session")+"\";")+"\"");
+
+var time = db.stringlist_answer("SELECT time from messages WHERE   sender=\""+db.string_answer("SELECT name from users where cookie=\""+request.get_cookie("user_session")+"\";")+"\"");
+var answer = "";
+var i = 0;
+message_string.reverse().forEach(function(entry) {
+answer = answer + " <tr><td>"+sender[i]+"</td><td>"+entry+"</td></tr>";
+i++;
+});
+answer;
+)@@
+</table>
+</td>
+</table>
+
+}endif
+</div>
+
+ </body>
+</html>
